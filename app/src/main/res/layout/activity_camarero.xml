@@ -1,14 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
 
+    <!-- Barra -->
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Camarero Screen"
+        android:id="@+id/barra"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="Barra"
         android:gravity="center"
-        android:textSize="24sp"/>
+        android:background="#FFA726"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Cocina -->
+    <TextView
+        android:id="@+id/cocina"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="Cocina"
+        android:gravity="center"
+        android:background="#FF7043"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/barra"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Mesa 1 -->
+    <Button
+        android:id="@+id/btnMesa1"
+        style="@style/MesaButton"
+        android:text="Mesa 1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/barra"
+        android:layout_marginStart="48dp"/>
+
+    <!-- Mesa 2 -->
+    <Button
+        android:id="@+id/btnMesa2"
+        style="@style/MesaButton"
+        android:text="Mesa 2"
+        app:layout_constraintTop_toTopOf="@id/btnMesa1"
+        app:layout_constraintStart_toEndOf="@id/btnMesa1"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Mesa 3 -->
+    <Button
+        android:id="@+id/btnMesa3"
+        style="@style/MesaButton"
+        android:text="Mesa 3"
+        app:layout_constraintTop_toBottomOf="@id/btnMesa1"
+        app:layout_constraintStart_toStartOf="@id/btnMesa1"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Mesa 4 -->
+    <Button
+        android:id="@+id/btnMesa4"
+        style="@style/MesaButton"
+        android:text="Mesa 4"
+        app:layout_constraintTop_toTopOf="@id/btnMesa3"
+        app:layout_constraintStart_toEndOf="@id/btnMesa3"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Mesa 5 -->
+    <Button
+        android:id="@+id/btnMesa5"
+        style="@style/MesaButton"
+        android:text="Mesa 5"
+        app:layout_constraintTop_toBottomOf="@id/btnMesa3"
+        app:layout_constraintStart_toStartOf="@id/btnMesa3"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Mesa 6 -->
+    <Button
+        android:id="@+id/btnMesa6"
+        style="@style/MesaButton"
+        android:text="Mesa 6"
+        app:layout_constraintTop_toTopOf="@id/btnMesa5"
+        app:layout_constraintStart_toEndOf="@id/btnMesa5"
+        android:layout_marginStart="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@ public interface UsuarioService {
     @GET("usuarios")
     Call<List<Usuario>> loginUsuario(
             @Query("correo") String correo,
-            @Query("contraseña") String contrasena
+            @Query("contrasena") String contrasena
     );
 }
 
