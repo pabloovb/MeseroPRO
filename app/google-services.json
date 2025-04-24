@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473520035070",
+    "project_id": "meseropro-aa416",
+    "storage_bucket": "meseropro-aa416.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473520035070:android:573d9fac69de3f24b001af",
+        "android_client_info": {
+          "package_name": "com.example.meseropro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4pYdQ_C2xt79qVQwdnBoDidIOHJzriYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

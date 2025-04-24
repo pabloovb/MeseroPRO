@@ -15,7 +15,7 @@
         android:theme="@style/Theme.MeseroPro"
         tools:targetApi="31">
         <activity
-            android:name=".ui.PedidoActivity"
+            android:name=".ui.SeleccionarMesaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +24,7 @@
         </activity>
 
         <activity android:name=".ui.CamareroActivity" />
+        <activity android:name=".ui.PedidoActivity" />
 
     </application>
 

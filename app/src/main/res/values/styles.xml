@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="MesaButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:backgroundTint">#CC5E12</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:elevation">6dp</item>
+    </style>
+
+</resources>

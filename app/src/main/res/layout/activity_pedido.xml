@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Layout principal horizontal -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <!-- Panel izquierdo: Categorías y productos -->
+        <LinearLayout
+            android:layout_weight="2.5"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <!-- Categorías -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categorías"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="8dp"/>
+
+            <!-- Botones de categorías -->
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/layoutCategorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:columnCount="2"/>
+
+            <!-- Productos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Productos"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProductos"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <!-- Panel derecho: Pedido actual -->
+        <LinearLayout
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/layoutPanelDerecho"
+            android:background="#EEEEEE"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedido actual"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPedido"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnEnviarPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ENVIAR PEDIDO"
+                android:textStyle="bold"
+                android:backgroundTint="#CC5E12"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/tvTotalPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TOTAL: € 0.00"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="end"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
