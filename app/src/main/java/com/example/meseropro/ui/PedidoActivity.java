@@ -18,6 +18,8 @@ import com.example.meseropro.R;
 import com.example.meseropro.adapter.PedidoAdapter;
 import com.example.meseropro.adapter.ProductoAdapter;
 import com.example.meseropro.model.LineaPedido;
+import com.example.meseropro.model.Mesa;
+import com.example.meseropro.model.Pedido;
 import com.example.meseropro.model.Product;
 import com.example.meseropro.network.APIClient;
 import com.example.meseropro.network.SupabaseService;
@@ -41,6 +43,8 @@ public class PedidoActivity extends AppCompatActivity {
     TextView tvTotal;
     Button btnEnviarPedido;
     GridLayout layoutCategorias;
+    private int mesaNumero;
+    private int comensales;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,43 +57,36 @@ public class PedidoActivity extends AppCompatActivity {
         btnEnviarPedido = findViewById(R.id.btnEnviarPedido);
         layoutCategorias = findViewById(R.id.layoutCategorias);
 
+        mesaNumero = getIntent().getIntExtra("mesa", -1);
+        comensales = getIntent().getIntExtra("comensales", 1);
 
         recyclerProductos.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerPedido.setLayoutManager(new LinearLayoutManager(this));
-
-        cargarProductosDesdeSupabase();
-
         pedidoAdapter = new PedidoAdapter(this, new ArrayList<>());
         recyclerPedido.setAdapter(pedidoAdapter);
 
-        int numeroMesa = getIntent().getIntExtra("mesa", -1);
-
         TextView tvMesa = new TextView(this);
-        tvMesa.setText("Mesa: " + numeroMesa);
+        tvMesa.setText("Mesa: " + mesaNumero);
         tvMesa.setTextSize(18);
         tvMesa.setPadding(16, 0, 0, 16);
         tvMesa.setTextColor(getResources().getColor(android.R.color.black));
+        LinearLayout panelDerecho = findViewById(R.id.layoutPanelDerecho);
+        panelDerecho.addView(tvMesa, 0);
 
-// Lo añades arriba del layout o donde tú veas
-        LinearLayout panelDerecho = findViewById(R.id.layoutPanelDerecho); // ponle ID al LinearLayout derecho
-        panelDerecho.addView(tvMesa, 0); // lo mete arriba de todo
+        cargarProductosDesdeSupabase();
 
         btnEnviarPedido.setOnClickListener(v -> {
             if (pedidoMap.isEmpty()) {
                 Toast.makeText(this, "No hay productos en el pedido", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Pedido enviado correctamente ✅", Toast.LENGTH_SHORT).show();
-                pedidoMap.clear();
-                actualizarListaPedido();
+                registrarMesaYGuardarPedido();
             }
         });
     }
 
     private void cargarProductosDesdeSupabase() {
         SupabaseService service = APIClient.getClient().create(SupabaseService.class);
-        Call<List<Product>> call = service.getProductos();
-
-        call.enqueue(new Callback<List<Product>>() {
+        service.getProductos().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -115,10 +112,9 @@ public class PedidoActivity extends AppCompatActivity {
 
     private void generarCategorias(List<Product> productos) {
         layoutCategorias.removeAllViews();
-        layoutCategorias.setColumnCount(2); // 👉 Ahora 2 columnas
+        layoutCategorias.setColumnCount(2);
 
         HashSet<String> categorias = new HashSet<>();
-
         for (Product p : productos) {
             if (p.getCategoria() != null && !p.getCategoria().isEmpty()) {
                 categorias.add(p.getCategoria());
@@ -167,14 +163,9 @@ public class PedidoActivity extends AppCompatActivity {
         if (pedidoMap.containsKey(producto.getNombre())) {
             pedidoMap.get(producto.getNombre()).aumentarCantidad();
         } else {
-            pedidoMap.put(producto.getNombre(), new LineaPedido(
-                    producto.getNombre(), // 🟢 ¡Esto debe ser el nombre real!
-                    1,
-                    producto.getPrecio()
-            ));
+            pedidoMap.put(producto.getNombre(), new LineaPedido(producto.getNombre(), 1, producto.getPrecio()));
         }
         actualizarListaPedido();
-        Log.d("DEBUG_PEDIDO", "Añadiendo producto: " + producto.getNombre());
     }
 
     public void eliminarLineaPedido(String nombreProducto) {
@@ -192,5 +183,51 @@ public class PedidoActivity extends AppCompatActivity {
             total += lp.getTotal();
         }
         tvTotal.setText(String.format("TOTAL: € %.2f", total));
+    }
+
+    private void registrarMesaYGuardarPedido() {
+        SupabaseService service = APIClient.getClient().create(SupabaseService.class);
+        Mesa mesa = new Mesa(mesaNumero, "ocupada", comensales);
+
+        service.crearMesa(mesa).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                guardarPedido();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                guardarPedido(); // intentar guardar de todas formas
+            }
+        });
+    }
+
+    private void guardarPedido() {
+        SupabaseService service = APIClient.getClient().create(SupabaseService.class);
+        List<LineaPedido> productos = new ArrayList<>(pedidoMap.values());
+        double total = 0;
+        for (LineaPedido lp : productos) total += lp.getTotal();
+
+        Pedido pedido = new Pedido("Mesa " + mesaNumero, productos, total, "Camarero 1", comensales);
+
+        service.guardarPedido(pedido).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(PedidoActivity.this, "Pedido guardado exitosamente", Toast.LENGTH_SHORT).show();
+                    pedidoMap.clear();
+                    actualizarListaPedido();
+                } else {
+                    Log.e("ERROR_PEDIDO", "Error guardar pedido: " + response.code());
+                    Toast.makeText(PedidoActivity.this, "Error al guardar pedido", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("ERROR_PEDIDO", "Fallo red pedido: " + t.getMessage());
+                Toast.makeText(PedidoActivity.this, "Fallo al guardar pedido", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
