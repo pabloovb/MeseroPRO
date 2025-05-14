@@ -1,6 +1,11 @@
+// src/main/java/com/example/meseropro/model/LineaPedido.java
 package com.example.meseropro.model;
 
-public class LineaPedido {
+import java.io.Serializable;
+
+public class LineaPedido implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String nombreProducto;
     private int cantidad;
     private double precioUnitario;
@@ -31,4 +36,3 @@ public class LineaPedido {
         this.cantidad++;
     }
 }
-

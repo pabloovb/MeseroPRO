@@ -1,9 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MeseroPro" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Tema principal, hereda de MaterialComponents sin ActionBar -->
+    <style name="Theme.MeseroPro" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Paleta principal -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorTextPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorTextPrimary</item>
+
+        <!-- Fondos y superficies -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorTextPrimary</item>
+
+        <!-- Texto -->
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MeseroPro.Headline6</item>
+
+        <!-- Estados -->
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorBackground</item>
+
+        <!-- Forma global (esquinas redondeadas) -->
+        <item name="shapeAppearanceSmallComponent">@style/Shape.CornersMedium</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.CornersMedium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.CornersMedium</item>
     </style>
 
-    <style name="Theme.MeseroPro" parent="Base.Theme.MeseroPro" />
+    <!-- Corner radius reusable -->
+    <style name="Shape.CornersMedium" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Tipografía de encabezados -->
+    <style name="TextAppearance.MeseroPro.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
 </resources>
