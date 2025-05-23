@@ -9,23 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarAdmin"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarNoti"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:title="Notificaciones"
             android:background="?attr/colorPrimary"
-            app:title="Administración"
-            app:titleTextColor="@android:color/white"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            app:titleTextColor="?attr/colorOnPrimary"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNotificaciones"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

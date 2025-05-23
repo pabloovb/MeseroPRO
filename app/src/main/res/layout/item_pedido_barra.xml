@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="?attr/colorSurface"
+    android:elevation="2dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- Cabecera: Mesa y resumen -->
+    <TextView
+        android:id="@+id/tvMesaBarra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvResumenBarra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:paddingBottom="4dp"/>
+
+    <!-- Detalle expandible con CheckBoxes -->
+    <LinearLayout
+        android:id="@+id/layoutProductosBarra"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <!-- Botón para cerrar pedido y crear ticket -->
+    <Button
+        android:id="@+id/btnCerrarPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cerrar pedido y generar ticket"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+</LinearLayout>
