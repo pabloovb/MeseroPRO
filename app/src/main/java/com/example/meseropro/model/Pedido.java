@@ -1,11 +1,12 @@
-// src/main/java/com/example/meseropro/model/Pedido.java
 package com.example.meseropro.model;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class Pedido implements Serializable {
-    private int id;
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private String mesa;
     private List<LineaPedido> productos;
     private double total;
@@ -13,14 +14,24 @@ public class Pedido implements Serializable {
     private int comensales;
     private String estado;
 
-    // Para lectura desde Supabase (incluye el id)
-    public Pedido(int id,
-                  String mesa,
-                  List<LineaPedido> productos,
-                  double total,
-                  String camarero,
-                  int comensales,
-                  String estado) {
+    public Pedido() {}
+
+    // Constructor para nuevas inserciones (no incluye id)
+    public Pedido(String mesa, List<LineaPedido> productos,
+                  double total, String camarero,
+                  int comensales, String estado) {
+        this.mesa = mesa;
+        this.productos = productos;
+        this.total = total;
+        this.camarero = camarero;
+        this.comensales = comensales;
+        this.estado = estado;
+    }
+
+    // Constructor completo para edición
+    public Pedido(Integer id, String mesa, List<LineaPedido> productos,
+                  double total, String camarero,
+                  int comensales, String estado) {
         this.id = id;
         this.mesa = mesa;
         this.productos = productos;
@@ -30,34 +41,23 @@ public class Pedido implements Serializable {
         this.estado = estado;
     }
 
-    // Para creación de un nuevo pedido (sin id)
-    public Pedido(String mesa,
-                  List<LineaPedido> productos,
-                  double total,
-                  String camarero,
-                  int comensales,
-                  String estado) {
-        this.mesa = mesa;
-        this.productos = productos;
-        this.total = total;
-        this.camarero = camarero;
-        this.comensales = comensales;
-        this.estado = estado;
-    }
-
-    public int getId() { return id; }
+    // Getters y setters...
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
     public String getMesa() { return mesa; }
-    public List<LineaPedido> getProductos() { return productos; }
-    public double getTotal() { return total; }
-    public String getCamarero() { return camarero; }
-    public int getComensales() { return comensales; }
-    public String getEstado() { return estado; }
-
-    public void setId(int id) { this.id = id; }
     public void setMesa(String mesa) { this.mesa = mesa; }
-    public void setProductos(List<LineaPedido> productos) { this.productos = productos; }
+    public List<LineaPedido> getProductos() { return productos; }
+    public void setProductos(List<LineaPedido> productos) {
+        this.productos = productos;
+    }
+    public double getTotal() { return total; }
     public void setTotal(double total) { this.total = total; }
+    public String getCamarero() { return camarero; }
     public void setCamarero(String camarero) { this.camarero = camarero; }
-    public void setComensales(int comensales) { this.comensales = comensales; }
+    public int getComensales() { return comensales; }
+    public void setComensales(int comensales) {
+        this.comensales = comensales;
+    }
+    public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 }

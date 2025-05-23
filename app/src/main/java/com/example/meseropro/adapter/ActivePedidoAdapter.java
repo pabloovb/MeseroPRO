@@ -7,19 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.meseropro.model.Pedido;
 import com.example.meseropro.ui.EditPedidoActivity;
-
 import java.util.List;
 
 public class ActivePedidoAdapter extends RecyclerView.Adapter<ActivePedidoAdapter.VH> {
 
-    private Context ctx;
-    private List<Pedido> items;
+    private final Context ctx;
+    private final List<Pedido> items;
 
     public ActivePedidoAdapter(Context ctx, List<Pedido> items) {
         this.ctx = ctx;
@@ -41,7 +38,7 @@ public class ActivePedidoAdapter extends RecyclerView.Adapter<ActivePedidoAdapte
         holder.tv2.setText(String.format("TOTAL: € %.2f", ped.getTotal()));
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, EditPedidoActivity.class);
-            intent.putExtra("pedido", ped);
+            intent.putExtra("pedido_id", ped.getId());
             ctx.startActivity(intent);
         });
     }
@@ -52,7 +49,7 @@ public class ActivePedidoAdapter extends RecyclerView.Adapter<ActivePedidoAdapte
     }
 
     static class VH extends RecyclerView.ViewHolder {
-        TextView tv1, tv2;
+        final TextView tv1, tv2;
         VH(View itemView) {
             super(itemView);
             tv1 = itemView.findViewById(android.R.id.text1);

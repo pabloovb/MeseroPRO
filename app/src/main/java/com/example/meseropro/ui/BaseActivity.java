@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_notifications) {
-            // TODO: lanzar NotificacionesActivity
+            startActivity(new Intent(this, NotificacionesActivity.class));
             return true;
         }
         if (id == R.id.action_settings) {

@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +40,6 @@ public class ActivePedidosActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_pedidos);
 
-        // Configura toolbar + menú
         setupToolbar(R.id.toolbar);
 
         rvPedidos = findViewById(R.id.recyclerPedidosActivos);
@@ -63,7 +62,8 @@ public class ActivePedidosActivity extends BaseActivity {
         service.getPedidosPorEstado("eq.pendiente")
                 .enqueue(new Callback<List<Pedido>>() {
                     @Override
-                    public void onResponse(Call<List<Pedido>> call, Response<List<Pedido>> resp) {
+                    public void onResponse(Call<List<Pedido>> call,
+                                           Response<List<Pedido>> resp) {
                         if (resp.isSuccessful() && resp.body() != null) {
                             pedidosActivos.clear();
                             pedidosActivos.addAll(resp.body());
@@ -93,15 +93,16 @@ public class ActivePedidosActivity extends BaseActivity {
     }
 
     private void mostrarDialogoMesa() {
-        EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        new androidx.appcompat.app.AlertDialog.Builder(this)
+        EditText inputMesa = new EditText(this);
+        inputMesa.setInputType(InputType.TYPE_CLASS_NUMBER);
+        new AlertDialog.Builder(this)
                 .setTitle("¿Número de mesa?")
-                .setView(input)
+                .setView(inputMesa)
                 .setPositiveButton("Siguiente", (d, w) -> {
-                    String s = input.getText().toString().trim();
+                    String s = inputMesa.getText().toString().trim();
                     if (s.isEmpty()) {
-                        Toast.makeText(this, "Introduce un número válido",
+                        Toast.makeText(this,
+                                "Introduce un número válido",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -112,21 +113,24 @@ public class ActivePedidosActivity extends BaseActivity {
     }
 
     private void mostrarDialogoComensales(int mesa) {
-        EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        new androidx.appcompat.app.AlertDialog.Builder(this)
+        EditText inputCom = new EditText(this);
+        inputCom.setInputType(InputType.TYPE_CLASS_NUMBER);
+        new AlertDialog.Builder(this)
                 .setTitle("¿Número de comensales?")
-                .setView(input)
+                .setView(inputCom)
                 .setPositiveButton("Confirmar", (d, w) -> {
-                    String s = input.getText().toString().trim();
+                    String s = inputCom.getText().toString().trim();
                     if (s.isEmpty()) {
-                        Toast.makeText(this, "Introduce un número válido",
+                        Toast.makeText(this,
+                                "Introduce un número válido",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    int comensales = Integer.parseInt(s);
+
                     Intent it = new Intent(this, PedidoActivity.class);
                     it.putExtra("mesa", mesa);
-                    it.putExtra("comensales", Integer.parseInt(s));
+                    it.putExtra("comensales", comensales);
                     startActivity(it);
                 })
                 .setNegativeButton("Cancelar", null)

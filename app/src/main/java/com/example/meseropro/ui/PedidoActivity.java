@@ -4,12 +4,16 @@ package com.example.meseropro.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,16 +28,19 @@ import com.example.meseropro.model.Product;
 import com.example.meseropro.network.APIClient;
 import com.example.meseropro.network.SupabaseService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PedidoActivity extends BaseActivity {
+    private static final String TAG = "PedidoActivity";
 
     private RecyclerView recyclerProductos, recyclerPedido;
     private ProductoAdapter productoAdapter;
@@ -45,49 +52,54 @@ public class PedidoActivity extends BaseActivity {
     private GridLayout layoutCategorias;
     private int mesaNumero;
     private int comensales;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido);
-        setupToolbar(R.id.toolbar);
-        // Obtener mesa y comensales del Intent
+
+        // 0) Recuperar extras de mesa y comensales
         mesaNumero = getIntent().getIntExtra("mesa", -1);
         comensales = getIntent().getIntExtra("comensales", 1);
+        Log.d(TAG, "Extras recibidos — mesa: " + mesaNumero + ", comensales: " + comensales);
+        Toast.makeText(this,
+                "Mesa: " + mesaNumero + " | Comensales: " + comensales,
+                Toast.LENGTH_LONG).show();
 
-        // Referencias UI
-        recyclerProductos = findViewById(R.id.recyclerProductos);
-        recyclerPedido     = findViewById(R.id.recyclerPedido);
-        tvTotal            = findViewById(R.id.tvTotalPedido);
-        btnEnviarPedido    = findViewById(R.id.btnEnviarPedido);
-        layoutCategorias   = findViewById(R.id.layoutCategorias);
+        // 1) Toolbar + menú (sin carrito aquí)
+        setupToolbar(R.id.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        // Configurar RecyclerViews
-        recyclerProductos.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerPedido.setLayoutManager(new LinearLayoutManager(this));
-        pedidoAdapter = new PedidoAdapter(this, new ArrayList<>());
-        recyclerPedido.setAdapter(pedidoAdapter);
-
-        // Mostrar el número de mesa
-        TextView tvMesa = new TextView(this);
-        tvMesa.setText("Mesa: " + mesaNumero);
-        tvMesa.setTextSize(18);
-        tvMesa.setPadding(16, 0, 0, 16);
-        tvMesa.setTextColor(Color.BLACK);
-        LinearLayout panelDerecho = findViewById(R.id.layoutPanelDerecho);
-        panelDerecho.addView(tvMesa, 0);
-
-        // Cargar productos
-        cargarProductosDesdeSupabase();
-
-        // Enviar pedido
-        btnEnviarPedido.setOnClickListener(v -> {
-            if (pedidoMap.isEmpty()) {
-                Toast.makeText(this, "No hay productos en el pedido", Toast.LENGTH_SHORT).show();
+        // 2) Drawer toggle
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ImageButton btnToggle = findViewById(R.id.btnTogglePedido);
+        btnToggle.setOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                drawerLayout.closeDrawer(GravityCompat.END);
             } else {
-                guardarPedido();
+                drawerLayout.openDrawer(GravityCompat.END);
             }
         });
+
+        // 3) Referencias UI
+        layoutCategorias   = findViewById(R.id.layoutCategorias);
+        recyclerProductos  = findViewById(R.id.recyclerProductos);
+        recyclerPedido     = findViewById(R.id.recyclerPedido);
+        btnEnviarPedido    = findViewById(R.id.btnEnviarPedido);
+        tvTotal            = findViewById(R.id.tvTotalPedido);
+
+        // 4) Configurar RecyclerViews
+        recyclerProductos.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerPedido   .setLayoutManager(new LinearLayoutManager(this));
+        pedidoAdapter     = new PedidoAdapter(this, new ArrayList<>());
+        recyclerPedido   .setAdapter(pedidoAdapter);
+
+        // 5) Carga productos y categorías
+        cargarProductosDesdeSupabase();
+
+        // 6) Enviar pedido
+        btnEnviarPedido.setOnClickListener(v -> guardarPedido());
     }
 
     private void cargarProductosDesdeSupabase() {
@@ -166,15 +178,25 @@ public class PedidoActivity extends BaseActivity {
             pedidoMap.get(producto.getNombre()).aumentarCantidad();
         } else {
             pedidoMap.put(producto.getNombre(),
-                    new LineaPedido(producto.getNombre(), 1, producto.getPrecio()));
+                    new LineaPedido(producto.getNombre(), 1, producto.getPrecio())
+            );
         }
         actualizarListaPedido();
+        Toast.makeText(
+                this,
+                producto.getNombre() + " añadido al pedido",
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
-    // Este método es llamado desde PedidoAdapter al hacer clic en 🗑️
     public void eliminarLineaPedido(String nombreProducto) {
         pedidoMap.remove(nombreProducto);
         actualizarListaPedido();
+        Toast.makeText(
+                this,
+                nombreProducto + " eliminado del pedido",
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     private void actualizarListaPedido() {
@@ -216,16 +238,14 @@ public class PedidoActivity extends BaseActivity {
                     pedidoMap.clear();
                     actualizarListaPedido();
                 } else {
-                    Log.e("PedidoActivity",
-                            "Error guardar pedido: " + resp.code());
+                    Log.e(TAG, "Error guardar pedido: " + resp.code());
                     Toast.makeText(PedidoActivity.this,
                             "Error al guardar pedido", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("PedidoActivity",
-                        "Fallo red al guardar pedido", t);
+                Log.e(TAG, "Fallo red al guardar pedido", t);
                 Toast.makeText(PedidoActivity.this,
                         "Fallo al guardar pedido", Toast.LENGTH_SHORT).show();
             }
