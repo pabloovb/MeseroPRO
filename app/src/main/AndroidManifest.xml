@@ -17,7 +17,7 @@
 
 
         <activity
-            android:name=".ui.ActivePedidosActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +27,13 @@
 
 
         <activity android:name=".ui.CocinaActivity" />
-        <activity android:name=".ui.BarraActivity" />
-
+        <activity android:name=".ui.ActivePedidosActivity" />
         <activity android:name=".ui.PedidoActivity" />
+        <activity android:name=".ui.BarraActivity" />
         <activity android:name=".ui.NotificacionesActivity" />
         <activity android:name=".ui.EditPedidoActivity" />
+        <activity android:name=".ui.AdminActivity" />
+        <activity android:name=".ui.GestionProductosActivity"/>
 
 
     </application>

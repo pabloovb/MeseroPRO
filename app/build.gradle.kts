@@ -43,11 +43,13 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.firebase.firestore)
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")

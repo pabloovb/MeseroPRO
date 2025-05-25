@@ -45,9 +45,9 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         holder.tvNombre.setText(producto.getNombre());
         holder.tvPrecio.setText(String.format("€ %.2f", producto.getPrecio()));
 
-        if (producto.getImagenUrl() != null && !producto.getImagenUrl().isEmpty()) {
+        if (producto.getImagen_url() != null && !producto.getImagen_url().isEmpty()) {
             Glide.with(context)
-                    .load(producto.getImagenUrl())
+                    .load(producto.getImagen_url())
                     .placeholder(R.drawable.placeholder)
                     .into(holder.imgProducto);
         } else {

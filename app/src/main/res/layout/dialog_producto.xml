@@ -1,0 +1,41 @@
+<!-- res/layout/dialog_producto.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etNombreProd"
+            android:hint="Nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etCategoriaProd"
+            android:hint="Categoría"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etPrecioProd"
+            android:hint="Precio"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etImagenUrlProd"
+            android:hint="URL imagen"
+            android:inputType="textUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -5,37 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- AppBarLayout necesario para que el RecyclerView se comporte con el toolbar -->
+    <!-- AppBar con Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="MeseroPro"
+            app:title="Pedidos Activos"
             app:titleTextColor="?attr/colorOnPrimary"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Contenido principal -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerPedidosActivos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="72dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <!-- Botón flotante para añadir pedidos -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAgregarPedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/mas"
-        app:backgroundTint="?attr/colorSecondary"
-        app:tint="?attr/colorOnSecondary"
+        android:contentDescription="Agregar pedido"
+        app:srcCompat="@drawable/ic_add"
         app:layout_anchor="@id/recyclerPedidosActivos"
         app:layout_anchorGravity="bottom|end"/>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

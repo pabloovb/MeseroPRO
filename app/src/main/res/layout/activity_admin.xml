@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- res/layout/activity_admin.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Títulos o botones para cada sección -->
+    <Button
+        android:id="@+id/btnGestionProductos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="Gestión de Productos"/>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="Administración"
-            app:titleTextColor="@android:color/white"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <Button
+        android:id="@+id/btnGestionUsuarios"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_height="wrap_content"
+        android:text="Gestión de Usuarios"
+        android:layout_marginTop="8dp"/>
+
+
+    <!-- Nuevo: Modo Camarero -->
+    <Button
+        android:id="@+id/btnModoCamarero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modo Camarero"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>

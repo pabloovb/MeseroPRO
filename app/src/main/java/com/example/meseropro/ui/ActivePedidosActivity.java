@@ -1,4 +1,3 @@
-// src/main/java/com/example/meseropro/ui/ActivePedidosActivity.java
 package com.example.meseropro.ui;
 
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivePedidosActivity extends BaseActivity {
-
     private static final String TAG = "ActivePedidosActivity";
     private RecyclerView rvPedidos;
     private FloatingActionButton fabAgregar;
@@ -40,20 +39,27 @@ public class ActivePedidosActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_pedidos);
 
+        // 1) toolbar
         setupToolbar(R.id.toolbar);
 
+        // 2) RecyclerView + Adapter
         rvPedidos = findViewById(R.id.recyclerPedidosActivos);
         rvPedidos.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ActivePedidoAdapter(this, pedidosActivos);
         rvPedidos.setAdapter(adapter);
 
+        // 3) Botón +
         fabAgregar = findViewById(R.id.fabAgregarPedido);
         fabAgregar.setOnClickListener(v -> mostrarDialogoMesa());
+
+        // 4) ¡Carga al arrancar!
+        cargarPedidosActivos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // también recarga al volver de otra pantalla
         cargarPedidosActivos();
     }
 
@@ -62,29 +68,36 @@ public class ActivePedidosActivity extends BaseActivity {
         service.getPedidosPorEstado("eq.pendiente")
                 .enqueue(new Callback<List<Pedido>>() {
                     @Override
-                    public void onResponse(Call<List<Pedido>> call,
-                                           Response<List<Pedido>> resp) {
+                    public void onResponse(@NonNull Call<List<Pedido>> call,
+                                           @NonNull Response<List<Pedido>> resp) {
                         if (resp.isSuccessful() && resp.body() != null) {
                             pedidosActivos.clear();
                             pedidosActivos.addAll(resp.body());
+                            Log.d(TAG, "Pedidos recibidos: " + pedidosActivos.size());
                             adapter.notifyDataSetChanged();
-                        } else {
-                            try {
-                                String err = resp.errorBody() != null
-                                        ? resp.errorBody().string() : "empty";
-                                Log.e(TAG, "Error cargar pedidos: code="
-                                        + resp.code() + " body=" + err);
-                            } catch (IOException e) {
-                                Log.e(TAG, "Error leyendo errorBody", e);
+                            if (pedidosActivos.isEmpty()) {
+                                Toast.makeText(ActivePedidosActivity.this,
+                                        "No hay pedidos pendientes", Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            String err;
+                            try {
+                                err = (resp.errorBody() != null)
+                                        ? resp.errorBody().string()
+                                        : "vacío";
+                            } catch (IOException e) {
+                                err = e.getMessage();
+                            }
+                            Log.e(TAG, "Error cargar pedidos: code="
+                                    + resp.code() + " body=" + err);
                             Toast.makeText(ActivePedidosActivity.this,
-                                    "Error al cargar pedidos (" + resp.code() + ")",
+                                    "Error al cargar pedidos ("+resp.code()+")",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
-                    public void onFailure(Call<List<Pedido>> call, Throwable t) {
-                        Log.e(TAG, "Fallo de red", t);
+                    public void onFailure(@NonNull Call<List<Pedido>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "Fallo red al cargar pedidos", t);
                         Toast.makeText(ActivePedidosActivity.this,
                                 "Fallo de red: " + t.getMessage(),
                                 Toast.LENGTH_SHORT).show();
@@ -101,8 +114,7 @@ public class ActivePedidosActivity extends BaseActivity {
                 .setPositiveButton("Siguiente", (d, w) -> {
                     String s = inputMesa.getText().toString().trim();
                     if (s.isEmpty()) {
-                        Toast.makeText(this,
-                                "Introduce un número válido",
+                        Toast.makeText(this, "Introduce un número válido",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -121,16 +133,13 @@ public class ActivePedidosActivity extends BaseActivity {
                 .setPositiveButton("Confirmar", (d, w) -> {
                     String s = inputCom.getText().toString().trim();
                     if (s.isEmpty()) {
-                        Toast.makeText(this,
-                                "Introduce un número válido",
+                        Toast.makeText(this, "Introduce un número válido",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    int comensales = Integer.parseInt(s);
-
                     Intent it = new Intent(this, PedidoActivity.class);
                     it.putExtra("mesa", mesa);
-                    it.putExtra("comensales", comensales);
+                    it.putExtra("comensales", Integer.parseInt(s));
                     startActivity(it);
                 })
                 .setNegativeButton("Cancelar", null)

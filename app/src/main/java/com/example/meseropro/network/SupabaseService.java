@@ -11,6 +11,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
@@ -117,4 +118,40 @@ public interface SupabaseService {
             @Query("id") String filtro,      // ej: "eq.123"
             @Body Map<String, String> cambios  // ej: {"estado":"servido"}
     );
+
+    /**
+     * Lee todos los pedidos cuyo campo 'fecha' (timestamp) coincida
+     * con el prefijo que envíes, p. ej. "eq.2025-05-21"
+     */
+
+
+
+
+    @Headers({
+            "apikey: "     + Constants.SUPABASE_API_KEY,
+            "Authorization: Bearer " + Constants.SUPABASE_API_KEY,
+            "Content-Type: application/json",
+            "Prefer: return=minimal"
+    })
+    @POST("productos")
+    Call<Void> crearProducto(@Body Product producto);
+
+    @Headers({
+            "apikey: "     + Constants.SUPABASE_API_KEY,
+            "Authorization: Bearer " + Constants.SUPABASE_API_KEY,
+            "Content-Type: application/json",
+            "Prefer: return=minimal"
+    })
+    @PATCH("productos")
+    Call<Void> actualizarProducto(
+            @Query("id") String filtro,           // ej: "eq.8"
+            @Body Map<String,Object> cambios
+    );
+
+    @Headers({
+            "apikey: "     + Constants.SUPABASE_API_KEY,
+            "Authorization: Bearer " + Constants.SUPABASE_API_KEY
+    })
+    @DELETE("productos")
+    Call<Void> eliminarProducto(@Query("id") String filtro);
 }

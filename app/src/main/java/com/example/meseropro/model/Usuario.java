@@ -1,29 +1,29 @@
+// src/main/java/com/example/meseropro/model/Usuario.java
 package com.example.meseropro.model;
 
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-public class Usuario {
-
-    private String id;
+public class Usuario implements Serializable {
+    private Integer id;
     private String nombre;
-    private String correo;
-    private String contrasena;  // <--- cambiado aquí
-    private String rol;
+    private String rol;   // p.ej. "camarero", "cocina", "barra", "admin"
 
-    public Usuario() {
-        // Constructor vacío obligatorio para Retrofit/Gson
+    public Usuario() {}
+
+    public Usuario(Integer id, String nombre, String rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.rol = rol;
     }
 
-    // Getters
-    public String getId() { return id; }
-    public String getNombre() { return nombre; }
-    public String getCorreo() { return correo; }
-    public String getContrasena() { return contrasena; }  // <-- actualizado
-    public String getRol() { return rol; }
+    // getters y setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    // Setters
-    public void setId(String id) { this.id = id; }
+    public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setCorreo(String correo) { this.correo = correo; }
-    public void setContrasena(String contrasena) { this.contrasena = contrasena; }  // <-- actualizado
+
+    public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
 }
