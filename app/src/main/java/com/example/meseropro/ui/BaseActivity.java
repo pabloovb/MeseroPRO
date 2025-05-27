@@ -49,10 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(new Intent(this, NotificacionesActivity.class));
             return true;
         }
-        if (id == R.id.action_settings) {
-            // TODO: lanzar SettingsActivity
-            return true;
-        }
+        
         return super.onOptionsItemSelected(item);
     }
 }

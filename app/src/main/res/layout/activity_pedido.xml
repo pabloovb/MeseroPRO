@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <!-- AppBar con Toolbar -->
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -24,6 +25,7 @@
                 app:title="Pedido"
                 app:titleTextColor="?attr/colorOnPrimary"
                 app:popupTheme="@style/Theme.MaterialComponents.Light"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Scrollable principal bajo la AppBar -->
@@ -39,12 +41,23 @@
                 android:layout_height="wrap_content">
 
                 <!-- Cabecera Categorías + Botón Carrito -->
+                <ImageButton
+                    android:id="@+id/btnTogglePedido"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Mostrar pedido"
+                    android:src="@drawable/ic_shopping_cart"
+                    android:tint="?attr/colorOnSurface" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:padding="8dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <TextView
                         android:id="@+id/tvCabeceraCategorias"
@@ -55,14 +68,6 @@
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
-                    <ImageButton
-                        android:id="@+id/btnTogglePedido"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_shopping_cart"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:tint="?attr/colorOnSurface"
-                        android:contentDescription="Mostrar pedido"/>
                 </LinearLayout>
 
                 <!-- Grid de categorías -->
@@ -70,7 +75,7 @@
                     android:id="@+id/layoutCategorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
+                    android:columnCount="1"
                     android:padding="8dp"/>
 
                 <!-- Título Productos -->
@@ -90,6 +95,7 @@
                     android:nestedScrollingEnabled="false"/>
             </LinearLayout>
         </ScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!-- ─── Drawer lateral (“Pedido actual”) ─── -->
@@ -99,7 +105,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:orientation="vertical"
-        android:background="?attr/colorSurface"
+        android:background="#FAFAFA"
         android:padding="8dp">
 
         <TextView

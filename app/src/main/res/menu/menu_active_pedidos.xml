@@ -15,11 +15,7 @@
         android:title="Notificaciones"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Ajustes"
-        app:showAsAction="ifRoom" />
+
 
 </menu>
 
